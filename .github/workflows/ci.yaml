@@ -1,0 +1,13 @@
+name: CI workflow to check code Schema
+
+on:
+    pull_request:
+    push:
+        branches:
+            - main
+
+jobs:
+    call-reusable-workflow-job:
+        uses: ./.github/workflows/reusable-workflow.yaml
+        with:
+            validation_mode: ${{ github.event_name == 'pull_request' && 'pr' || 'main' }}
