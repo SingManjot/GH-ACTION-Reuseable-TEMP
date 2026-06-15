@@ -1,0 +1,39 @@
+name: Reusable Code Schema Checker
+
+on:
+  workflow_call:
+
+jobs:
+  check-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for Path Changes
+        id: change_check
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          echo "Comparing $BASE_SHA..$HEAD_SHA"
+          CHANGED_FILES="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")"
+
+          if echo "$CHANGED_FILES" | grep -E '^(src/|lib/|schemas/).*\.(js|ts|json)$' >/dev/null; then
+            echo "run_schema=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_schema=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Schema Verification
+        if: steps.change_check.outputs.run_schema == 'true'
+        run: |
+          echo "Executing your code schema validation rules..."
+          # your real validation command here
+
+      - name: Skip Notice
+        if: steps.change_check.outputs.run_schema != 'true'
+        run: echo "No schema-related changes detected."
