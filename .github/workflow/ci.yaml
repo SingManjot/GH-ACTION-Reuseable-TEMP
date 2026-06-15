@@ -1,0 +1,8 @@
+name: CI workflow to check code Schema
+
+on:
+    pull_request:
+
+jobs:
+    call-reusable-workflow-job:
+        uses: ./.github/workflows/reusable-workflow.yaml
