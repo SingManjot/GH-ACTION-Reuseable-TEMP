@@ -13,4 +13,4 @@ jobs:
         steps:
             - name: notify
               run: |
-                  echo "${{ needs.call-reusable-workflow-job.outputs.deployment_url }}
+                  echo "${{ needs.call-reusable-workflow-job.outputs.deployment_url }}"
