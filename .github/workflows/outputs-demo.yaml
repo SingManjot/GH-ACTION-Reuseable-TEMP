@@ -12,7 +12,7 @@ jobs:
         run: |
           echo " deploying application ..."
           sleep 3
-          echo "deployment_url=https://manjoy-demo.com" >> $GITHUB_OUTPUT
+          echo "deployment_url=https://manjot-demo.com" >> $GITHUB_OUTPUT
 
       - name: Display deployment details
         run: |
