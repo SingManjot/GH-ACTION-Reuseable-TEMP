@@ -4,7 +4,7 @@ on:
   workflow_call:
     outputs:
       deployment_url:
-        value: $${{ jobs.deploy-job.outputs.deployment_url }}
+        value: ${{ jobs.deploy-job.outputs.deployment_url }}
 
 jobs:
   deploy-job:
