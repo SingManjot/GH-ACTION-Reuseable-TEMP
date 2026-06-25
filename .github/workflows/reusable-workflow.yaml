@@ -1,51 +1,18 @@
-name: Reusable Code Schema Checker
+name: Reusable workflow
 
 on:
   workflow_call:
-    inputs:
-      validation_mode:
-        required: true
-        type: string
+    outputs:
+      deployment_url:
+        value: $${{ jobs.deploy-job.outputs.deployment_url }}
 
 jobs:
-  check-schema:
+  deploy-job:
     runs-on: ubuntu-latest
+    outputs:
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Check for Path Changes
-        id: change_check
-        shell: bash
+      - name: Deploy Application
+        id: deploy
         run: |
-          if [ "${{ inputs.validation_mode }}" = "main" ]; then
-            echo "Running schema validation for main branch push."
-            echo "run_schema=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          BASE_REF="${{ github.event.pull_request.base.ref }}"
-          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
-
-          git fetch origin "$BASE_REF"
-
-          echo "Comparing origin/$BASE_REF...$HEAD_SHA"
-          CHANGED_FILES="$(git diff --name-only "origin/$BASE_REF...$HEAD_SHA")"
-
-          if echo "$CHANGED_FILES" | grep -E '^(src/|lib/|schemas/).*\.(js|ts|json)$' >/dev/null; then
-            echo "run_schema=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run_schema=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Run Schema Verification
-        if: steps.change_check.outputs.run_schema == 'true'
-        run: |
-          echo "Executing your code schema validation rules..."
-          # your real validation command here
-
-      - name: Skip Notice
-        if: steps.change_check.outputs.run_schema != 'true'
-        run: echo "No schema-related changes detected for this pull request."
+          echo "deployment_url=https://manjot.com" >> $GITHUB_OUTPUT
