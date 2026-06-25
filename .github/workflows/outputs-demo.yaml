@@ -5,6 +5,8 @@ on:
 
 jobs:
   deployment-job:
+    outputs:
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Application
@@ -14,9 +16,9 @@ jobs:
           sleep 3
           echo "deployment_url=https://manjot-demo.com" >> $GITHUB_OUTPUT
 
-      - name: Display deployment details
-        run: |
-          echo "Deployment completed successfully"
-          echo "Deployment URL:"
-          echo "${{ steps.deploy.outputs.deployment_url }}"
-          
+  notify-job:
+    needs: deployment-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Notification
+        run: echo "${{ needs.deployment-job.outputs.deployment_url }}"
