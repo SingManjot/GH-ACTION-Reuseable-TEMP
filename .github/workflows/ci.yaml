@@ -1,13 +1,16 @@
 name: CI workflow to check code Schema
 
 on:
-    pull_request:
-    push:
-        branches:
-            - main
+    workflow_dispatch: 
 
 jobs:
     call-reusable-workflow-job:
         uses: ./.github/workflows/reusable-workflow.yaml
-        with:
-            validation_mode: ${{ github.event_name == 'pull_request' && 'pr' || 'main' }}
+
+    notify-job:
+        needs: call-reusable-workflow-job
+        runs-on: ubuntu-latest
+        steps:
+            - name: notify
+              run: |
+                  echo "${{ needs.call-reusable-workflow-job.outputs.deployment_url }}
