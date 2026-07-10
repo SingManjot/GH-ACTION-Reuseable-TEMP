@@ -27,7 +27,7 @@ jobs:
 
       - name: Install Depencencies
         run: |
-          pip install -r requirments.txt
+          pip install -r requirements.txt
   
   test-job:
     runs-on: ubuntu-latest
