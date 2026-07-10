@@ -1,0 +1,61 @@
+name: 01 - Artifacts Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  flask-ci-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: false
+          tags: msk-flask-app:v1.0.1
+
+      - name: Run Container
+        run: |
+          docker run -d \
+          -p 5000:5000 \
+          --name msk-flask-app \
+          msk-flask-app:v1.0.1
+
+      - name: Generate smoke test report
+        run: |
+          sleep 5
+          curl http://localhost:5000 > smoke-test-report.txt
+          curl http://localhost:5000/health >> smoke-test-report.txt
+
+      - name: Export container logs
+        run: |
+          docker logs msk-flask-app > container-logs.txt
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: flask-ci-artifacts
+          path: |
+            smoke-test-report.txt
+            container-logs.txt
+  
+  review-job:
+    runs-on: ubuntu-latest
+    needs: flask-ci-job
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: flask-ci-artifacts
+
+      - name: Review downloaded artifacts
+        run: |
+          echo "-------------SMOKE TEST REPORT------------"
+          cat smoke-test-report.txt
+          echo ""
+          echo "=======CONTAINER LOGS========"
+          cat container-logs.txt
+    
