@@ -23,7 +23,7 @@ jobs:
 
       - name: Display cache status
         run: |
-          echo "Cache Hit: ${{ steps.pip-cache.outputs.cache-hit }}
+          echo "Cache Hit: ${{ steps.pip-cache.outputs.cache-hit }}"
 
       - name: Install Depencencies
         run: |
