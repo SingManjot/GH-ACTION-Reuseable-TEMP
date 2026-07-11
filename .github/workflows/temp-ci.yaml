@@ -1,0 +1,10 @@
+name: Temp CI yaml
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-1:
+    runs-on: ubuntu-latest
+    steps:
+    - name: why this
