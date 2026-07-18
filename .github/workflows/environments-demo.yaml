@@ -1,4 +1,4 @@
-name: 04- Artifacts Demo
+name: 04- Artifacts Demo (enchanced with environments)
 
 on:
   workflow_dispatch:
