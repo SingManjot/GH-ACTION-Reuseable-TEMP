@@ -1,4 +1,4 @@
-name: 04- Artifacts Demo
+name: 04- Artifacts Demo (adding something new)
 
 on:
   workflow_dispatch:
