@@ -32,7 +32,6 @@ jobs:
   
   deploy-dev-job:
     name: Deploy to Dev Environment
-    if: github.ref_name == 'develop'
     needs: build-job
     runs-on: ubuntu-latest
     environment: DEV
