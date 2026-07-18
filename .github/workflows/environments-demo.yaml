@@ -1,0 +1,69 @@
+name: 04- Artifacts Demo
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - develop
+      - "feature/*"
+
+jobs:
+  build-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Login to Dockerhub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ vars.DOCKERHUB_USERNAME }}/msk-flask-app:latest:${{ github.sha }}
+            ${{ vars.DOCKERHUB_USERNAME }}/msk-flask-app:latest
+  
+  deploy-dev-job:
+    name: Deploy to Dev Environment
+    if: github.ref_name == 'develop'
+    needs: build-job
+    runs-on: ubuntu-latest
+    environment: DEV
+
+    steps:
+      - name: Display Branch Info
+        run: |
+          echo "Branch Name: ${{ github.ref_name }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Commit Message: ${{ github.event.head_commit.message }}"
+      
+      - name: Display env configuration
+        run: |
+          echo "Application URL: ${{ vars.APP_URL }}"
+          echo "Debug Mode: ${{ vars.DEBUG_MODE }}"
+
+  deploy-prod-job:
+    name: Deploy to Prod Environment
+    if: github.ref_name == 'main'
+    needs: build-job
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+      - name: Display Branch Info
+        run: |
+          echo "Branch Name: ${{ github.ref_name }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Commit Message: ${{ github.event.head_commit.message }}"
+      
+      - name: Display env configuration
+        run: |
+          echo "Application URL: ${{ vars.APP_URL }}"
+          echo "Debug Mode: ${{ vars.DEBUG_MODE }}"
