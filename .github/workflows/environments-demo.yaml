@@ -27,7 +27,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ vars.DOCKERHUB_USERNAME }}/msk-flask-app:latest:${{ github.sha }}
+            ${{ vars.DOCKERHUB_USERNAME }}/msk-flask-app:${{ github.sha }}
             ${{ vars.DOCKERHUB_USERNAME }}/msk-flask-app:latest
   
   deploy-dev-job:
