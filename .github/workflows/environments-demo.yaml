@@ -51,7 +51,6 @@ jobs:
 
   deploy-prod-job:
     name: Deploy to Prod Environment
-    if: github.ref_name == 'main'
     needs: build-job
     runs-on: ubuntu-latest
     environment: prod
