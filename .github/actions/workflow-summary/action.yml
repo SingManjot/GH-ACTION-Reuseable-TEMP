@@ -1,0 +1,12 @@
+name: JavaScript Action Demo
+
+description: A simple JavaScript action demo
+
+inputs:
+  name:
+    description: 'Name to greet'
+    required: true
+
+runs:
+  using: node24
+  main: index.js
