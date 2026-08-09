@@ -1,7 +1,7 @@
 name: JavaScript Action Demo
 
 description: A simple JavaScript action demo
-
+ 
 inputs:
   name:
     description: 'Name to greet'
