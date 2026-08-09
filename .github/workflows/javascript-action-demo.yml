@@ -2,6 +2,10 @@ name: 05 - JavaScript Action Demo
 
 on:
   workflow_dispatch:
+    inputs:
+      name:
+        description: 'Name to greet'
+        required: true
 
 jobs:
   build:
@@ -18,4 +22,4 @@ jobs:
       - name: Run JavaScript Action
         uses: ./.github/actions/workflow-summary
         with:
-          name: "Manjot"
+          name: ${{ github.event.inputs.name }}
