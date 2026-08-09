@@ -1,0 +1,21 @@
+name: 05 - JavaScript Action Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Install dependencies
+        working-directory: ./.github/actions/workflow-summary
+        run: npm install
+      
+      - name: Run JavaScript Action
+        uses: ./.github/actions/workflow-summary
+        with:
+          name: "Manjot"

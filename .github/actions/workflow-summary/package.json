@@ -1,0 +1,15 @@
+{
+    "name": "@github/workflow-summary",
+    "version": "1.0.0",
+    "description": "A GitHub Action to summarize workflow runs.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@actions/core": "^1.11.1",
+        "@actions/github": "^6.0.1"
+    }
+}
