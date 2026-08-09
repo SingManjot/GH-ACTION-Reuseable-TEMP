@@ -6,7 +6,7 @@ on:
     branches:
       - main
       - develop
-      - "feature/*"
+      - "feat/*"
 
 jobs:
   build-job:
@@ -35,7 +35,7 @@ jobs:
     needs: build-job
     runs-on: ubuntu-latest
     environment: DEV
-    if: github.ref_name == 'develop' || startsWith(github.ref_name, 'feature/') # this will ensure that the deploy job only runs for develop and feature branches
+    if: github.ref_name == 'develop' || startsWith(github.ref_name, 'feat/') # this will ensure that the deploy job only runs for develop and feature branches
 
     steps:
       - name: Display Branch Info
