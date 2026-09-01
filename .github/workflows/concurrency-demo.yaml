@@ -6,12 +6,13 @@ on:
     branches:
       - main
 
+concurrency:
+  group: concurrency-demo
+  cancel-in-progress: true
+
 jobs:
   concurrency-demo-job:
     runs-on: ubuntu-latest
-    concurrency:
-      group: concurrency-demo
-      cancel-in-progress: true
 
     steps:
       - name: Start WF
